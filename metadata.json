@@ -1,0 +1,6 @@
+{
+  "name": "Sana F Killiyath",
+  "description": "A calm, illustration-led personal website for Sana F Killiyath: essays, art, and other things.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
