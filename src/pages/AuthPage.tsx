@@ -1,25 +1,33 @@
 import React, { FormEvent, useMemo, useState } from 'react';
-import { Eye, EyeOff, LockKeyhole, Mail, UserRound } from 'lucide-react';
+import { Eye, EyeOff, LockKeyhole, UserRound } from 'lucide-react';
 import { supabase } from '../lib/supabase';
 
 type Mode = 'login' | 'signup';
+
+const toAuthEmail = (username: string) =>
+  `${username.trim().toLowerCase()}@sana-site.local`;
 
 export const AuthPage: React.FC = () => {
   const [mode, setMode] = useState<Mode>('login');
   const [showPassword, setShowPassword] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const [serverMessage, setServerMessage] = useState('');
-  const [values, setValues] = useState({ name: '', email: '', password: '' });
+  const [values, setValues] = useState({ username: '', password: '' });
 
   const errors = useMemo(() => {
     const next: Record<string, string> = {};
-    if (mode === 'signup' && !values.name.trim()) next.name = 'Please enter your name.';
-    if (!values.email.trim()) next.email = 'Please enter your email.';
-    else if (!/^\S+@\S+\.\S+$/.test(values.email)) next.email = 'Please enter a valid email.';
+    const username = values.username.trim();
+
+    if (!username) next.username = 'Please enter a username.';
+    else if (!/^[a-zA-Z0-9_.-]+$/.test(username)) {
+      next.username = 'Use only letters, numbers, dots, dashes, or underscores.';
+    } else if (username.length < 3) next.username = 'Use at least 3 characters.';
+
     if (!values.password) next.password = 'Please enter a password.';
     else if (values.password.length < 8) next.password = 'Use at least 8 characters.';
+
     return next;
-  }, [mode, values]);
+  }, [values]);
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -28,22 +36,22 @@ export const AuthPage: React.FC = () => {
 
     if (Object.keys(errors).length > 0) return;
 
+    const username = values.username.trim().toLowerCase();
+    const authEmail = toAuthEmail(username);
+
     if (mode === 'login') {
       const { error } = await supabase.auth.signInWithPassword({
-        email: values.email.trim(),
+        email: authEmail,
         password: values.password,
       });
-
       if (error) setServerMessage(error.message);
       return;
     }
 
     const { error } = await supabase.auth.signUp({
-      email: values.email.trim(),
+      email: authEmail,
       password: values.password,
-      options: {
-        data: { display_name: values.name.trim() },
-      },
+      options: { data: { username, display_name: username } },
     });
 
     if (error) {
@@ -51,10 +59,8 @@ export const AuthPage: React.FC = () => {
       return;
     }
 
-    // Keep signup and login as two separate steps, even when Supabase
-    // returns a session immediately because email confirmation is disabled.
     await supabase.auth.signOut();
-    setValues({ name: '', email: values.email.trim(), password: '' });
+    setValues({ username, password: '' });
     setSubmitted(false);
     setServerMessage('Account created! You can now log in.');
     setMode('login');
@@ -91,24 +97,13 @@ export const AuthPage: React.FC = () => {
             </div>
 
             <form onSubmit={handleSubmit} noValidate className="space-y-5">
-              {mode === 'signup' && (
-                <div>
-                  <label htmlFor="auth-name" className="block font-heading text-lg mb-1">Name</label>
-                  <div className="relative">
-                    <UserRound size={18} className="absolute left-3 top-3.5 text-[#6B655E]" />
-                    <input id="auth-name" value={values.name} onChange={(e) => setValues({ ...values, name: e.target.value })} className={`w-full rounded-md border bg-white py-3 pl-10 pr-3 font-body outline-none transition focus:border-[#C8674A] focus:ring-2 focus:ring-[#C8674A]/10 ${fieldError('name') ? 'border-[#C8674A]' : 'border-[#E8E8E8]'}`} autoComplete="name" />
-                  </div>
-                  {fieldError('name') && <p className="mt-1 font-body text-sm text-[#C8674A]">{fieldError('name')}</p>}
-                </div>
-              )}
-
               <div>
-                <label htmlFor="auth-email" className="block font-heading text-lg mb-1">Email</label>
+                <label htmlFor="auth-username" className="block font-heading text-lg mb-1">Username</label>
                 <div className="relative">
-                  <Mail size={18} className="absolute left-3 top-3.5 text-[#6B655E]" />
-                  <input id="auth-email" type="email" value={values.email} onChange={(e) => setValues({ ...values, email: e.target.value })} className={`w-full rounded-md border bg-white py-3 pl-10 pr-3 font-body outline-none transition focus:border-[#C8674A] focus:ring-2 focus:ring-[#C8674A]/10 ${fieldError('email') ? 'border-[#C8674A]' : 'border-[#E8E8E8]'}`} autoComplete="email" />
+                  <UserRound size={18} className="absolute left-3 top-3.5 text-[#6B655E]" />
+                  <input id="auth-username" value={values.username} onChange={(e) => setValues({ ...values, username: e.target.value })} className={`w-full rounded-md border bg-white py-3 pl-10 pr-3 font-body outline-none transition focus:border-[#C8674A] focus:ring-2 focus:ring-[#C8674A]/10 ${fieldError('username') ? 'border-[#C8674A]' : 'border-[#E8E8E8]'}`} autoComplete="username" />
                 </div>
-                {fieldError('email') && <p className="mt-1 font-body text-sm text-[#C8674A]">{fieldError('email')}</p>}
+                {fieldError('username') && <p className="mt-1 font-body text-sm text-[#C8674A]">{fieldError('username')}</p>}
               </div>
 
               <div>
