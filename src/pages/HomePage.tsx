@@ -28,12 +28,12 @@ export const HomePage: React.FC<HomePageProps> = ({ navigate, onOpenArtLightbox 
             </div>
           </div>
 
-          {/* Right Column: Cat sketch large (320-400px wide), gentle floating animation, undistorted */}
+          {/* Right Column: Black cat illustration large (320-400px wide), gentle floating animation, undistorted */}
           <div className="md:col-span-5 flex items-center justify-center md:justify-end">
             <div className="relative group p-2">
               <img
                 src="/cat-with-tea.png"
-                alt="Line drawing of a cat lounging with a warm cup of tea"
+                alt="Hand-drawn black cat illustration curled beside a warm cup of tea"
                 className="hero-cat-float w-72 sm:w-80 md:w-[360px] h-auto object-contain mix-blend-multiply select-none"
               />
             </div>

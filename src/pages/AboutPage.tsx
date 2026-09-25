@@ -16,12 +16,12 @@ export const AboutPage: React.FC = () => {
         </p>
       </header>
 
-      {/* Cat Sketch Visual: Undistorted, mix-blend-multiply */}
+      {/* Black Cat Illustration Visual: Undistorted, mix-blend-multiply */}
       <div className="my-8 py-7 px-4 bg-white border border-[#E8E8E8] rounded-lg flex flex-col items-center justify-center text-center shadow-2xs">
         <div className="cat-hover-interactive flex items-center justify-center mb-3">
           <img
             src="/cat-with-tea.png"
-            alt="Line drawing of a cat lounging with a cup of tea"
+            alt="Hand-drawn black cat illustration lounging with a cup of tea"
             className="h-28 sm:h-36 w-auto object-contain mix-blend-multiply"
           />
         </div>

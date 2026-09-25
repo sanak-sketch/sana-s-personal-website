@@ -1,78 +1,101 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 850" width="1000" height="850" fill="none" stroke="#1F1F1F" stroke-linecap="round" stroke-linejoin="round">
-  <!-- Cat with tea hand-drawn black ink illustration -->
-  <g id="cat-drawing" transform="translate(10, 20)">
-    
-    <!-- Left Ear (viewer left, cat's right ear) -->
-    <path d="M 188 38 C 192 20, 208 18, 218 36 C 228 50, 230 78, 222 108" stroke="#181818" stroke-width="13" stroke-linecap="round"/>
-    <!-- Left Ear solid dark fill inside -->
-    <path d="M 194 36 C 202 24, 212 28, 218 42 C 224 58, 222 84, 218 96 C 210 90, 200 70, 194 52 Z" fill="#181818" stroke="none"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 700" width="1000" height="700">
+  <defs>
+    <!-- Filter for slight organic hand-inked edge softening -->
+    <filter id="ink-bleed" x="-5%" y="-5%" width="110%" height="110%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.04" numOctaves="3" result="noise"/>
+      <feDisplacementMap in="SourceGraphic" in2="noise" scale="2.5" xChannelSelector="R" yChannelSelector="G"/>
+    </filter>
+  </defs>
 
-    <!-- Right Ear (viewer right, cat's left ear) -->
-    <path d="M 370 78 C 382 50, 400 24, 428 28 C 438 32, 442 52, 430 84 C 418 114, 408 140, 408 144" stroke="#181818" stroke-width="13" stroke-linecap="round"/>
-    <!-- Right Ear solid dark fill inside -->
-    <path d="M 400 42 C 416 32, 426 36, 432 46 C 436 62, 428 84, 420 102 C 412 94, 408 72, 402 54 Z" fill="#181818" stroke="none"/>
+  <g filter="url(#ink-bleed)">
+    <!-- Steam from tea mug -->
+    <path d="M 230 400 C 220 370, 235 345, 225 320 C 218 300, 222 280, 232 265" fill="none" stroke="#222222" stroke-width="7" stroke-linecap="round" opacity="0.7"/>
+    <path d="M 260 415 C 255 385, 275 360, 265 330 C 258 310, 264 290, 272 275" fill="none" stroke="#222222" stroke-width="6" stroke-linecap="round" opacity="0.6"/>
 
-    <!-- Head contour: brow and crown between ears -->
-    <path d="M 226 100 C 265 82, 335 84, 385 110" stroke="#181818" stroke-width="11" stroke-linecap="round"/>
+    <!-- Ceramic Tea Mug next to cat -->
+    <!-- Mug Body -->
+    <path d="M 205 450 C 205 440, 290 435, 295 450 L 285 535 C 283 555, 215 558, 212 535 Z" fill="#FFFFFF" stroke="#1F1F1F" stroke-width="9" stroke-linejoin="round"/>
+    <!-- Mug Rim & Liquid (Tea) -->
+    <ellipse cx="250" cy="448" rx="42" ry="12" fill="#C8674A" stroke="#1F1F1F" stroke-width="7"/>
+    <!-- Mug Handle -->
+    <path d="M 208 465 C 175 465, 175 515, 210 520" fill="none" stroke="#1F1F1F" stroke-width="8" stroke-linecap="round"/>
+    <!-- Cute small doodle on mug (fish or leaf) -->
+    <path d="M 242 490 Q 252 482 262 490 Q 252 498 242 490 Z" fill="#C8674A" stroke="#1F1F1F" stroke-width="2"/>
 
-    <!-- Head left cheek and chin -->
-    <path d="M 188 78 C 182 120, 178 182, 186 230 C 190 252, 208 280, 240 294" stroke="#181818" stroke-width="12" stroke-linecap="round"/>
-    <!-- Head right cheek -->
-    <path d="M 408 152 C 402 205, 396 250, 380 274 C 362 292, 328 300, 290 300" stroke="#181818" stroke-width="12" stroke-linecap="round"/>
+    <!-- The Black Cat Body - Rich solid inky black cat with elegant silhouette -->
+    <!-- Tail: Sweeps out and curls high with graceful loop -->
+    <path d="M 740 450 C 785 460, 840 475, 875 450 C 915 420, 930 350, 905 295 C 880 240, 820 225, 785 260 C 765 280, 770 315, 795 320 C 825 325, 845 295, 850 280 C 865 315, 855 385, 815 405 C 775 425, 725 410, 690 415 Z" fill="#181818" stroke="#181818" stroke-width="8" stroke-linejoin="round" stroke-linecap="round"/>
 
-    <!-- Eyes: characteristic black ink eyes with organic hand-drawn shapes -->
-    <!-- Left eye (viewer left) -->
-    <path d="M 235 220 C 230 190, 245 168, 264 172 C 274 175, 276 195, 272 224 C 268 238, 255 242, 245 238 C 236 234, 234 228, 235 220 Z" fill="#181818" stroke="#181818" stroke-width="3"/>
-    <!-- Right eye (viewer right) -->
-    <path d="M 336 218 C 330 190, 344 174, 360 178 C 372 182, 374 204, 368 230 C 362 242, 350 244, 342 240 C 335 234, 334 226, 336 218 Z" fill="#181818" stroke="#181818" stroke-width="3"/>
+    <!-- Main Cat Silhouette: Haunches, back, paws, neck, head, ears -->
+    <path d="
+      M 320 260 
+      C 305 200, 310 140, 335 110 
+      C 345 98, 360 105, 375 135 
+      C 400 155, 435 155, 465 135 
+      C 480 105, 495 98, 505 110 
+      C 525 135, 530 190, 520 245
+      C 555 270, 640 295, 720 320
+      C 775 340, 815 380, 825 435
+      C 835 490, 805 540, 755 565
+      C 715 580, 660 575, 620 560
+      C 585 545, 560 525, 545 525
+      C 515 525, 485 545, 450 555
+      C 410 565, 370 565, 330 555
+      C 290 545, 270 525, 260 500
+      C 255 480, 270 460, 290 455
+      C 315 450, 340 460, 355 480
+      C 370 500, 395 505, 420 495
+      C 445 485, 460 455, 465 425
+      C 470 380, 450 340, 425 320
+      C 375 315, 340 295, 320 260 Z
+    " fill="#181818" stroke="#181818" stroke-width="10" stroke-linejoin="round" stroke-linecap="round"/>
 
-    <!-- Nose (inverted triangle / ink dab) -->
-    <path d="M 276 252 C 285 240, 305 240, 316 252 C 314 266, 298 274, 288 270 C 280 266, 276 260, 276 252 Z" fill="#181818" stroke="#181818" stroke-width="4"/>
-    <!-- Small philtrum/mouth stroke under nose -->
-    <path d="M 296 270 L 296 286 C 286 298, 278 300, 274 298 M 296 286 C 308 298, 320 298, 330 292" stroke="#181818" stroke-width="10" stroke-linecap="round"/>
+    <!-- Front Paw resting gently beside / towards the warm tea mug -->
+    <path d="M 290 455 C 275 455, 260 470, 255 490 C 250 515, 270 535, 295 535 C 315 535, 330 520, 340 500 Z" fill="#181818"/>
+    <!-- Subtle paw toe division lines -->
+    <path d="M 270 500 C 270 515, 275 525, 280 530" stroke="#333333" stroke-width="4" stroke-linecap="round"/>
+    <path d="M 288 505 C 290 520, 295 530, 300 532" stroke="#333333" stroke-width="4" stroke-linecap="round"/>
 
-    <!-- Whiskers -->
-    <!-- Left whiskers -->
-    <path d="M 200 274 L 268 278" stroke="#181818" stroke-width="10" stroke-linecap="round"/>
-    <path d="M 206 286 L 258 288" stroke="#181818" stroke-width="7" stroke-linecap="round"/>
-    <!-- Right whiskers -->
-    <path d="M 324 278 L 442 268" stroke="#181818" stroke-width="11" stroke-linecap="round"/>
-    <path d="M 328 288 L 418 288" stroke="#181818" stroke-width="7" stroke-linecap="round"/>
+    <!-- Inner ear soft warm pink/charcoal hint -->
+    <path d="M 345 125 C 352 145, 362 165, 375 168 C 368 152, 360 135, 352 125 Z" fill="#383838"/>
+    <path d="M 495 125 C 488 145, 478 165, 465 168 C 472 152, 480 135, 488 125 Z" fill="#383838"/>
 
-    <!-- Back / Spine Line: starts at back of neck, flows across body to haunch -->
-    <path d="M 408 288 C 452 300, 520 300, 608 304 C 710 308, 804 330, 842 344" stroke="#181818" stroke-width="12" stroke-linecap="round"/>
+    <!-- Expressive, striking almond cat eyes with warm golden amber glow -->
+    <!-- Left Eye -->
+    <ellipse cx="375" cy="205" rx="20" ry="24" transform="rotate(-8 375 205)" fill="#F4B236"/>
+    <!-- Left Pupil: vertical slit with soft tapered ends -->
+    <path d="M 374 185 C 379 195, 379 215, 374 225 C 369 215, 369 195, 374 185 Z" fill="#121212"/>
+    <!-- Left Eye light highlight catchlight -->
+    <circle cx="369" cy="196" r="5" fill="#FFFFFF"/>
+    <circle cx="372" cy="204" r="2.5" fill="#FFFFFF"/>
 
-    <!-- Foreleg left (viewer's left paw reaching toward teacup) -->
-    <!-- Shoulder down to forearm -->
-    <path d="M 226 312 C 205 350, 160 410, 120 460 C 95 490, 70 514, 38 528" stroke="#181818" stroke-width="12" stroke-linecap="round"/>
-    <!-- Paw holding saucer / teacup -->
-    <path d="M 38 528 C 22 536, 16 550, 24 564 C 36 572, 60 568, 80 550 C 94 538, 108 554, 114 578 C 114 586, 102 594, 88 592 C 72 590, 64 580, 64 570" stroke="#181818" stroke-width="10" stroke-linecap="round"/>
+    <!-- Right Eye -->
+    <ellipse cx="465" cy="205" rx="20" ry="24" transform="rotate(8 465 205)" fill="#F4B236"/>
+    <!-- Right Pupil -->
+    <path d="M 466 185 C 471 195, 471 215, 466 225 C 461 215, 461 195, 466 185 Z" fill="#121212"/>
+    <!-- Right Eye catchlight -->
+    <circle cx="460" cy="196" r="5" fill="#FFFFFF"/>
+    <circle cx="463" cy="204" r="2.5" fill="#FFFFFF"/>
 
-    <!-- Teacup and saucer -->
-    <!-- Cup saucer / base line -->
-    <path d="M 72 478 L 244 456" stroke="#181818" stroke-width="11" stroke-linecap="round"/>
-    <!-- Teacup bowl -->
-    <path d="M 94 518 C 96 564, 134 590, 172 588 C 190 584, 196 556, 194 516 Z" fill="#181818" stroke="#181818" stroke-width="6"/>
-    <!-- Small saucer rim under cup -->
-    <path d="M 124 586 C 146 592, 174 590, 186 584" stroke="#181818" stroke-width="8" stroke-linecap="round"/>
-    <!-- Steam from tea -->
-    <path d="M 104 440 C 98 424, 108 412, 118 402 C 128 392, 124 380, 116 370" stroke="#181818" stroke-width="8" stroke-linecap="round"/>
-    <path d="M 142 452 C 136 432, 148 420, 158 408 C 168 396, 164 380, 152 368" stroke="#181818" stroke-width="8" stroke-linecap="round"/>
+    <!-- Sweet nose tip (soft terracotta pink/mauve) -->
+    <polygon points="414,235 426,235 420,244" fill="#C8674A"/>
+    <!-- Mouth curve -->
+    <path d="M 420 244 L 420 252 M 420 252 Q 412 258 404 254 M 420 252 Q 428 258 436 254" fill="none" stroke="#444444" stroke-width="3" stroke-linecap="round"/>
 
-    <!-- Foreleg right (cat's right front leg, stepping down on floor) -->
-    <path d="M 288 316 C 286 370, 270 440, 240 510 C 218 560, 180 616, 142 654 C 116 680, 88 696, 70 706 C 64 712, 70 726, 82 732 C 92 736, 106 730, 116 718 C 124 710, 132 724, 140 716 C 146 708, 142 696, 138 688 C 168 658, 206 608, 232 556 C 264 492, 320 400, 360 334" stroke="#181818" stroke-width="12" stroke-linecap="round"/>
+    <!-- Fine white / light ink whiskers spreading gracefully -->
+    <!-- Left Whiskers -->
+    <path d="M 390 238 C 340 232, 290 240, 240 260" fill="none" stroke="#FFFFFF" stroke-width="3.5" stroke-linecap="round" opacity="0.9"/>
+    <path d="M 388 246 C 335 248, 285 262, 235 288" fill="none" stroke="#FFFFFF" stroke-width="3.5" stroke-linecap="round" opacity="0.9"/>
+    <path d="M 392 254 C 342 265, 295 288, 250 318" fill="none" stroke="#FFFFFF" stroke-width="3" stroke-linecap="round" opacity="0.85"/>
 
-    <!-- Underbelly line -->
-    <path d="M 370 518 C 450 534, 550 538, 638 528" stroke="#181818" stroke-width="12" stroke-linecap="round"/>
+    <!-- Right Whiskers -->
+    <path d="M 450 238 C 500 232, 550 240, 600 260" fill="none" stroke="#FFFFFF" stroke-width="3.5" stroke-linecap="round" opacity="0.9"/>
+    <path d="M 452 246 C 505 248, 555 262, 605 288" fill="none" stroke="#FFFFFF" stroke-width="3.5" stroke-linecap="round" opacity="0.9"/>
+    <path d="M 448 254 C 498 265, 545 288, 590 318" fill="none" stroke="#FFFFFF" stroke-width="3" stroke-linecap="round" opacity="0.85"/>
 
-    <!-- Rear Leg & Paw (tucked resting behind) -->
-    <path d="M 640 500 C 674 530, 730 610, 770 650 C 786 666, 804 676, 786 702 C 778 714, 762 726, 746 724 C 736 722, 730 714, 732 702 C 726 700, 718 706, 712 718 C 704 732, 688 732, 672 724 C 660 718, 654 700, 660 686 C 664 672, 680 660, 694 650 C 724 624, 756 572, 778 522" stroke="#181818" stroke-width="12" stroke-linecap="round"/>
-
-    <!-- Rear Haunch / Hip curving down to base of tail -->
-    <path d="M 842 344 C 852 380, 866 428, 834 494 C 816 532, 784 570, 740 608 C 678 668, 620 706, 560 742" stroke="#181818" stroke-width="12" stroke-linecap="round"/>
-
-    <!-- Tail: Long expressive sweeping tail looping down, forward, and hooking up at the end -->
-    <path d="M 844 430 C 824 456, 814 510, 830 554 C 854 620, 912 680, 936 740 C 956 790, 950 850, 910 896 C 872 938, 810 954, 752 940 C 716 932, 688 898, 706 856 C 720 824, 760 812, 786 836 C 802 850, 800 878, 780 898 C 772 906, 762 908, 756 904" stroke="#181818" stroke-width="13" stroke-linecap="round"/>
+    <!-- Eyebrow whisker hairs -->
+    <path d="M 365 175 C 345 150, 320 135, 295 125" fill="none" stroke="#FFFFFF" stroke-width="2.5" stroke-linecap="round" opacity="0.75"/>
+    <path d="M 475 175 C 495 150, 520 135, 545 125" fill="none" stroke="#FFFFFF" stroke-width="2.5" stroke-linecap="round" opacity="0.75"/>
 
   </g>
 </svg>

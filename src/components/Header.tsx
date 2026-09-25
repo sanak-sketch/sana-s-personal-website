@@ -79,11 +79,11 @@ export const Header: React.FC<HeaderProps> = ({ currentRoute, navigate }) => {
             </span>
           </div>
 
-          {/* Cat Sketch: Undistorted, single dimension specified, mix-blend-multiply */}
+          {/* Black Cat Illustration: Undistorted, single dimension specified, mix-blend-multiply */}
           <div className="cat-hover-interactive flex items-center justify-center shrink-0">
             <img
               src="/cat-with-tea.png"
-              alt="Line drawing of a cat lounging with a cup of tea"
+              alt="Hand-drawn black cat illustration"
               className={`w-auto object-contain mix-blend-multiply transition-all duration-300 ${
                 isScrolled ? 'h-10 sm:h-12' : 'h-14 sm:h-18'
               }`}

@@ -79,8 +79,8 @@ export const siteConfig: SiteConfig = {
     },
     {
       label: 'Drawing',
-      value: 'Sleeping cats & ceramic teapots',
-      detail: 'black dip pen on cold-pressed paper'
+      value: 'Black cats & ceramic teapots',
+      detail: 'ink wash on cold-pressed paper'
     }
   ]
 };
@@ -135,15 +135,15 @@ export const blogs: BlogPost[] = [
   }
 ];
 
-// Exactly 3 art pieces: Cat with Tea first, followed by ONLY 2 "sketch coming soon" tiles
+// Exactly 3 art pieces: Black Cat with Tea first, followed by ONLY 2 "sketch coming soon" tiles
 export const artPieces: ArtPiece[] = [
   {
     slug: 'cat-with-tea',
-    title: 'Cat with Tea',
+    title: 'Black Cat with Tea',
     image: '/cat-with-tea.png',
-    medium: 'Ink on paper',
+    medium: 'Ink & wash on paper',
     year: '2026',
-    description: 'A black ink line drawing of a cat lounging with a cup of tea.'
+    description: 'A hand-drawn black cat illustration curled beside a steaming cup of tea.'
   },
   {
     slug: 'sketch-placeholder-1',
