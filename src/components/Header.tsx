@@ -26,6 +26,7 @@ export const Header: React.FC<HeaderProps> = ({ currentRoute, navigate }) => {
     { label: 'Blogs', route: '/blogs' },
     { label: 'Other Things', route: '/other-things' },
     { label: 'About', route: '/about' },
+    { label: 'Log in', route: '/auth' },
   ];
 
   const handleNavClick = (route: string) => {
