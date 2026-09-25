@@ -38,7 +38,7 @@ export const AuthPage: React.FC = () => {
       return;
     }
 
-    const { error, data } = await supabase.auth.signUp({
+    const { error } = await supabase.auth.signUp({
       email: values.email.trim(),
       password: values.password,
       options: {
@@ -48,9 +48,13 @@ export const AuthPage: React.FC = () => {
 
     if (error) {
       setServerMessage(error.message);
-    } else if (!data.session) {
-      setServerMessage('Account created. Check your email to confirm your account, then log in.');
+      return;
     }
+
+    setValues({ name: '', email: values.email.trim(), password: '' });
+    setSubmitted(false);
+    setServerMessage('Account created! You can now log in.');
+    setMode('login');
   };
 
   const switchMode = (nextMode: Mode) => {
