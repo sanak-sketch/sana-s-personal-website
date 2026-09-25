@@ -1,5 +1,6 @@
 import React, { FormEvent, useMemo, useState } from 'react';
 import { Eye, EyeOff, LockKeyhole, Mail, UserRound } from 'lucide-react';
+import { supabase } from '../lib/supabase';
 
 type Mode = 'login' | 'signup';
 
@@ -7,6 +8,7 @@ export const AuthPage: React.FC = () => {
   const [mode, setMode] = useState<Mode>('login');
   const [showPassword, setShowPassword] = useState(false);
   const [submitted, setSubmitted] = useState(false);
+  const [serverMessage, setServerMessage] = useState('');
   const [values, setValues] = useState({ name: '', email: '', password: '' });
 
   const errors = useMemo(() => {
@@ -19,21 +21,49 @@ export const AuthPage: React.FC = () => {
     return next;
   }, [mode, values]);
 
-  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setSubmitted(true);
+    setServerMessage('');
+
+    if (Object.keys(errors).length > 0) return;
+
+    if (mode === 'login') {
+      const { error } = await supabase.auth.signInWithPassword({
+        email: values.email.trim(),
+        password: values.password,
+      });
+
+      if (error) setServerMessage(error.message);
+      return;
+    }
+
+    const { error, data } = await supabase.auth.signUp({
+      email: values.email.trim(),
+      password: values.password,
+      options: {
+        data: { display_name: values.name.trim() },
+      },
+    });
+
+    if (error) {
+      setServerMessage(error.message);
+    } else if (!data.session) {
+      setServerMessage('Account created. Check your email to confirm your account, then log in.');
+    }
   };
 
   const switchMode = (nextMode: Mode) => {
     setMode(nextMode);
     setSubmitted(false);
+    setServerMessage('');
   };
 
   const fieldError = (field: string) => submitted ? errors[field] : undefined;
 
   return (
-    <main className="flex-1">
-      <section className="max-w-[760px] mx-auto px-4 sm:px-6 py-14 sm:py-20">
+    <main className="min-h-screen flex items-center">
+      <section className="max-w-[760px] w-full mx-auto px-4 sm:px-6 py-14 sm:py-20">
         <div className="grid md:grid-cols-[1fr_1.15fr] gap-10 md:gap-14 items-start">
           <div className="pt-2">
             <p className="font-hand text-2xl text-[#C8674A] mb-2">A little doorway</p>
@@ -42,32 +72,15 @@ export const AuthPage: React.FC = () => {
             </h1>
             <p className="font-body text-base sm:text-lg leading-8 text-[#6B655E] max-w-md">
               {mode === 'login'
-                ? 'Sign in to continue. The authentication connection will be added once the account provider is configured.'
-                : 'Create an account for the site. Your account connection will be added once the authentication provider is configured.'}
+                ? 'Log in to enter Sana’s little corner of the internet.'
+                : 'Create an account to enter Sana’s little corner of the internet.'}
             </p>
-            <div className="mt-8 p-4 border border-dashed border-[#E8E8E8] rounded-md bg-[#FAF5F2]">
-              <p className="font-body text-sm leading-6 text-[#6B655E]">
-                Authentication approach: provider-backed authentication will handle passwords and sessions. This page intentionally does not store credentials in the browser.
-              </p>
-            </div>
           </div>
 
           <div className="sketch-card p-6 sm:p-8">
             <div className="flex border-b border-[#E8E8E8] mb-7">
-              <button
-                type="button"
-                onClick={() => switchMode('login')}
-                className={`flex-1 pb-3 font-heading text-xl transition-colors ${mode === 'login' ? 'text-[#C8674A] border-b-2 border-[#C8674A]' : 'text-[#6B655E] hover:text-[#1F1F1F]'}`}
-              >
-                Log in
-              </button>
-              <button
-                type="button"
-                onClick={() => switchMode('signup')}
-                className={`flex-1 pb-3 font-heading text-xl transition-colors ${mode === 'signup' ? 'text-[#C8674A] border-b-2 border-[#C8674A]' : 'text-[#6B655E] hover:text-[#1F1F1F]'}`}
-              >
-                Sign up
-              </button>
+              <button type="button" onClick={() => switchMode('login')} className={`flex-1 pb-3 font-heading text-xl transition-colors ${mode === 'login' ? 'text-[#C8674A] border-b-2 border-[#C8674A]' : 'text-[#6B655E] hover:text-[#1F1F1F]'}`}>Log in</button>
+              <button type="button" onClick={() => switchMode('signup')} className={`flex-1 pb-3 font-heading text-xl transition-colors ${mode === 'signup' ? 'text-[#C8674A] border-b-2 border-[#C8674A]' : 'text-[#6B655E] hover:text-[#1F1F1F]'}`}>Sign up</button>
             </div>
 
             <form onSubmit={handleSubmit} noValidate className="space-y-5">
@@ -76,13 +89,7 @@ export const AuthPage: React.FC = () => {
                   <label htmlFor="auth-name" className="block font-heading text-lg mb-1">Name</label>
                   <div className="relative">
                     <UserRound size={18} className="absolute left-3 top-3.5 text-[#6B655E]" />
-                    <input
-                      id="auth-name"
-                      value={values.name}
-                      onChange={(e) => setValues({ ...values, name: e.target.value })}
-                      className={`w-full rounded-md border bg-white py-3 pl-10 pr-3 font-body outline-none transition focus:border-[#C8674A] focus:ring-2 focus:ring-[#C8674A]/10 ${fieldError('name') ? 'border-[#C8674A]' : 'border-[#E8E8E8]'}`}
-                      autoComplete="name"
-                    />
+                    <input id="auth-name" value={values.name} onChange={(e) => setValues({ ...values, name: e.target.value })} className={`w-full rounded-md border bg-white py-3 pl-10 pr-3 font-body outline-none transition focus:border-[#C8674A] focus:ring-2 focus:ring-[#C8674A]/10 ${fieldError('name') ? 'border-[#C8674A]' : 'border-[#E8E8E8]'}`} autoComplete="name" />
                   </div>
                   {fieldError('name') && <p className="mt-1 font-body text-sm text-[#C8674A]">{fieldError('name')}</p>}
                 </div>
@@ -92,14 +99,7 @@ export const AuthPage: React.FC = () => {
                 <label htmlFor="auth-email" className="block font-heading text-lg mb-1">Email</label>
                 <div className="relative">
                   <Mail size={18} className="absolute left-3 top-3.5 text-[#6B655E]" />
-                  <input
-                    id="auth-email"
-                    type="email"
-                    value={values.email}
-                    onChange={(e) => setValues({ ...values, email: e.target.value })}
-                    className={`w-full rounded-md border bg-white py-3 pl-10 pr-3 font-body outline-none transition focus:border-[#C8674A] focus:ring-2 focus:ring-[#C8674A]/10 ${fieldError('email') ? 'border-[#C8674A]' : 'border-[#E8E8E8]'}`}
-                    autoComplete="email"
-                  />
+                  <input id="auth-email" type="email" value={values.email} onChange={(e) => setValues({ ...values, email: e.target.value })} className={`w-full rounded-md border bg-white py-3 pl-10 pr-3 font-body outline-none transition focus:border-[#C8674A] focus:ring-2 focus:ring-[#C8674A]/10 ${fieldError('email') ? 'border-[#C8674A]' : 'border-[#E8E8E8]'}`} autoComplete="email" />
                 </div>
                 {fieldError('email') && <p className="mt-1 font-body text-sm text-[#C8674A]">{fieldError('email')}</p>}
               </div>
@@ -108,38 +108,19 @@ export const AuthPage: React.FC = () => {
                 <label htmlFor="auth-password" className="block font-heading text-lg mb-1">Password</label>
                 <div className="relative">
                   <LockKeyhole size={18} className="absolute left-3 top-3.5 text-[#6B655E]" />
-                  <input
-                    id="auth-password"
-                    type={showPassword ? 'text' : 'password'}
-                    value={values.password}
-                    onChange={(e) => setValues({ ...values, password: e.target.value })}
-                    className={`w-full rounded-md border bg-white py-3 pl-10 pr-11 font-body outline-none transition focus:border-[#C8674A] focus:ring-2 focus:ring-[#C8674A]/10 ${fieldError('password') ? 'border-[#C8674A]' : 'border-[#E8E8E8]'}`}
-                    autoComplete={mode === 'login' ? 'current-password' : 'new-password'}
-                  />
-                  <button
-                    type="button"
-                    onClick={() => setShowPassword(!showPassword)}
-                    className="absolute right-3 top-2.5 p-1.5 text-[#6B655E] hover:text-[#C8674A]"
-                    aria-label={showPassword ? 'Hide password' : 'Show password'}
-                  >
+                  <input id="auth-password" type={showPassword ? 'text' : 'password'} value={values.password} onChange={(e) => setValues({ ...values, password: e.target.value })} className={`w-full rounded-md border bg-white py-3 pl-10 pr-11 font-body outline-none transition focus:border-[#C8674A] focus:ring-2 focus:ring-[#C8674A]/10 ${fieldError('password') ? 'border-[#C8674A]' : 'border-[#E8E8E8]'}`} autoComplete={mode === 'login' ? 'current-password' : 'new-password'} />
+                  <button type="button" onClick={() => setShowPassword(!showPassword)} className="absolute right-3 top-2.5 p-1.5 text-[#6B655E] hover:text-[#C8674A]" aria-label={showPassword ? 'Hide password' : 'Show password'}>
                     {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
                   </button>
                 </div>
                 {fieldError('password') && <p className="mt-1 font-body text-sm text-[#C8674A]">{fieldError('password')}</p>}
               </div>
 
-              <button
-                type="submit"
-                className="w-full rounded-md bg-[#1F1F1F] text-white py-3.5 font-heading text-xl hover:bg-[#C8674A] transition-colors focus:outline-none focus:ring-2 focus:ring-[#C8674A]/30"
-              >
+              <button type="submit" className="w-full rounded-md bg-[#1F1F1F] text-white py-3.5 font-heading text-xl hover:bg-[#C8674A] transition-colors focus:outline-none focus:ring-2 focus:ring-[#C8674A]/30">
                 {mode === 'login' ? 'Log in' : 'Create account'}
               </button>
 
-              {submitted && Object.keys(errors).length === 0 && (
-                <p className="font-body text-sm leading-6 text-[#6B655E] text-center">
-                  The form is valid. Connect the selected authentication provider to enable account creation and sign-in.
-                </p>
-              )}
+              {serverMessage && <p className="font-body text-sm leading-6 text-[#C8674A] text-center">{serverMessage}</p>}
             </form>
           </div>
         </div>
