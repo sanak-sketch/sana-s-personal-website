@@ -12,6 +12,7 @@ import { BlogsPage } from './pages/BlogsPage';
 import { ArtPage } from './pages/ArtPage';
 import { OtherThingsPage } from './pages/OtherThingsPage';
 import { AboutPage } from './pages/AboutPage';
+import { AuthPage } from './pages/AuthPage';
 import { artPieces } from './content';
 
 export default function App() {
@@ -86,6 +87,8 @@ export default function App() {
         return <OtherThingsPage navigate={navigate} />;
       case '/about':
         return <AboutPage />;
+      case '/auth':
+        return <AuthPage />;
       case '/':
       default:
         return <HomePage navigate={navigate} onOpenArtLightbox={openLightbox} />;
