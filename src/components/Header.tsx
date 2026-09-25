@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { siteConfig } from '../content';
 import { Menu, X } from 'lucide-react';
+import { supabase } from '../lib/supabase';
 
 interface HeaderProps {
   currentRoute: string;
@@ -26,8 +27,7 @@ export const Header: React.FC<HeaderProps> = ({ currentRoute, navigate }) => {
     { label: 'Blogs', route: '/blogs' },
     { label: 'Other Things', route: '/other-things' },
     { label: 'About', route: '/about' },
-    { label: 'Log in', route: '/auth' },
-  ];
+      ];
 
   const handleNavClick = (route: string) => {
     navigate(route);
@@ -117,6 +117,7 @@ export const Header: React.FC<HeaderProps> = ({ currentRoute, navigate }) => {
               </a>
             );
           })}
+          <button type="button" onClick={() => supabase.auth.signOut()} className="wavy-link py-1 text-[#1F1F1F] hover:text-[#C8674A] transition-colors">Log out</button>
         </nav>
 
         {/* Mobile Menu Button */}
@@ -158,6 +159,7 @@ export const Header: React.FC<HeaderProps> = ({ currentRoute, navigate }) => {
                 </a>
               );
             })}
+            <button type="button" onClick={() => { supabase.auth.signOut(); setMobileMenuOpen(false); }} className="py-2 px-1 text-left text-[#1F1F1F] hover:text-[#C8674A]">Log out</button>
           </nav>
         </div>
       )}
