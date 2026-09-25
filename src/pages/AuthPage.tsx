@@ -51,6 +51,9 @@ export const AuthPage: React.FC = () => {
       return;
     }
 
+    // Keep signup and login as two separate steps, even when Supabase
+    // returns a session immediately because email confirmation is disabled.
+    await supabase.auth.signOut();
     setValues({ name: '', email: values.email.trim(), password: '' });
     setSubmitted(false);
     setServerMessage('Account created! You can now log in.');
