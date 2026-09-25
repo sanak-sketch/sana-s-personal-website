@@ -14,17 +14,30 @@ import { OtherThingsPage } from './pages/OtherThingsPage';
 import { AboutPage } from './pages/AboutPage';
 import { AuthPage } from './pages/AuthPage';
 import { artPieces } from './content';
+import { supabase } from './lib/supabase';
 
 export default function App() {
-  // Current route parsed from hash (e.g. '/', '/art', '/blogs', '/blogs/slug', '/other-things', '/about')
   const [currentRoute, setCurrentRoute] = useState<string>('/');
+  const [user, setUser] = useState<unknown>(null);
+  const [authLoading, setAuthLoading] = useState(true);
   const [isTransitioning, setIsTransitioning] = useState<boolean>(false);
-
-  // Lightbox state
   const [lightboxOpen, setLightboxOpen] = useState<boolean>(false);
   const [lightboxIndex, setLightboxIndex] = useState<number>(0);
 
-  // Sync route with hash
+  useEffect(() => {
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      setUser(session?.user ?? null);
+      setAuthLoading(false);
+    });
+
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+      setUser(session?.user ?? null);
+      setAuthLoading(false);
+    });
+
+    return () => subscription.unsubscribe();
+  }, []);
+
   useEffect(() => {
     const handleHashChange = () => {
       const rawHash = window.location.hash.replace(/^#/, '');
@@ -33,17 +46,13 @@ export default function App() {
       window.scrollTo({ top: 0, behavior: 'instant' });
     };
 
-    if (window.location.hash) {
-      handleHashChange();
-    } else {
-      window.location.hash = '#/';
-    }
+    if (window.location.hash) handleHashChange();
+    else window.location.hash = '#/';
 
     window.addEventListener('hashchange', handleHashChange);
     return () => window.removeEventListener('hashchange', handleHashChange);
   }, []);
 
-  // Navigation helper
   const navigate = (route: string) => {
     if (route === currentRoute) return;
     setIsTransitioning(true);
@@ -59,9 +68,7 @@ export default function App() {
     setLightboxOpen(true);
   };
 
-  // Route matching
   const renderCurrentPage = () => {
-    // Check for /blogs/:slug (or legacy /essays/:slug)
     if (currentRoute.startsWith('/blogs/')) {
       const slug = currentRoute.replace('/blogs/', '');
       return <BlogsPage currentSlug={slug} navigate={navigate} />;
@@ -70,49 +77,37 @@ export default function App() {
       const slug = currentRoute.replace('/essays/', '');
       return <BlogsPage currentSlug={slug} navigate={navigate} />;
     }
-
-    // Check for /other-things/:slug
     if (currentRoute.startsWith('/other-things/')) {
       const slug = currentRoute.replace('/other-things/', '');
       return <OtherThingsPage currentSlug={slug} navigate={navigate} />;
     }
 
     switch (currentRoute) {
-      case '/art':
-        return <ArtPage onOpenLightbox={openLightbox} />;
+      case '/art': return <ArtPage onOpenLightbox={openLightbox} />;
       case '/blogs':
-      case '/essays':
-        return <BlogsPage navigate={navigate} />;
-      case '/other-things':
-        return <OtherThingsPage navigate={navigate} />;
-      case '/about':
-        return <AboutPage />;
-      case '/auth':
-        return <AuthPage />;
+      case '/essays': return <BlogsPage navigate={navigate} />;
+      case '/other-things': return <OtherThingsPage navigate={navigate} />;
+      case '/about': return <AboutPage />;
       case '/':
-      default:
-        return <HomePage navigate={navigate} onOpenArtLightbox={openLightbox} />;
+      default: return <HomePage navigate={navigate} onOpenArtLightbox={openLightbox} />;
     }
   };
 
+  if (authLoading) {
+    return <div className="min-h-screen flex items-center justify-center bg-white text-[#6B655E] font-body">Loading...</div>;
+  }
+
+  if (!user) {
+    return <div className="min-h-screen bg-white text-[#1F1F1F]"><AuthPage /></div>;
+  }
+
   return (
     <div className="min-h-screen flex flex-col bg-white text-[#1F1F1F]">
-      {/* Signature Header */}
       <Header currentRoute={currentRoute} navigate={navigate} />
-
-      {/* Main Page Content with gentle fade on transition */}
-      <div
-        className={`flex-1 transition-opacity duration-150 ${
-          isTransitioning ? 'opacity-0' : 'opacity-100'
-        }`}
-      >
+      <div className={`flex-1 transition-opacity duration-150 ${isTransitioning ? 'opacity-0' : 'opacity-100'}`}>
         {renderCurrentPage()}
       </div>
-
-      {/* Footer */}
       <Footer />
-
-      {/* Shared Lightbox for Artwork */}
       <Lightbox
         pieces={artPieces}
         currentIndex={lightboxIndex}
